@@ -55,8 +55,8 @@ mcmcobj.heidelberger_welch()
 In your python code you could even use the python bindings for coda directly.
 For example, if you have a numpy array with shape (Nchain, Nparam) which stores the
 Monte Carlo Markov Chain (MCMC) where Nchain is the number of iterations of the
-MCMC and Nparam is the number of parameters, and a label of arrays, you could
-simply do
+MCMC and Nparam is the number of parameters, and an array of labels for your
+parameters, you could simply do
 ```python
 from py_coda import mcmc
 mcmcobj = mcmc(labels, data, thin=1)
