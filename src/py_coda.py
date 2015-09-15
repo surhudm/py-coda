@@ -139,6 +139,13 @@ class mcmc():
 
         return 0
 
+    def heidelberger_welch(self, eps=0.1, pvalue=0.05):
+        hw_output = self.coda.heidel_diag(self.codamcmc, eps=eps, pvalue=pvalue)
+        sys.stdout.write("Computing Heidelberger Welch stationarity and the half width test, please be patient...\n")
+
+        print hw_output
+        return 0
+
     def geweke(self, nbins=20, n_at_time=6, backend="TkAgg", savefig=0):
 
         import matplotlib
@@ -193,8 +200,9 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
 
 
 if __name__ == "__main__":
-    mcmcobj = read_pycoda("chainfile.trimmed.out", "chainnew.ind", thin=1)
+    mcmcobj = read_pycoda("jkdir/chainfile.trimmed.out", "jkdir/chainnew.ind", thin=1)
     mcmcobj.geweke()
     mcmcobj.get_stats()
     mcmcobj.plot_traces()
     mcmcobj.plot_autocorr()
+    mcmcobj.heidelberger_welch()

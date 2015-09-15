@@ -37,11 +37,34 @@ python setup.py install
 Run MCMC diagnostics:
 =====================
 
+Prepare MCMC file say chainfile.out where every line is the parameter set at
+every step of the chain. Prepare another file where each line lists the
+parameter name, write this parameter name in latex form, as it will get set as a
+label on the plots. Then you could run the diagnostics as follows:
+
 ```python
-from py-coda import 
-mcmcobj = read_pycoda("chainfile.trimmed.out", "chainnew.ind", thin=1)
+from py_coda import read_pycoda
+mcmcobj = read_pycoda("chainfile.out", "chainnew.ind", thin=1)
 mcmcobj.geweke()
 mcmcobj.get_stats()
 mcmcobj.plot_traces()
 mcmcobj.plot_autocorr()
+mcmcobj.heidelberger_welch()
 ```
+
+In your python code you could even use the python bindings for coda directly.
+For example, if you have a numpy array with shape (Nchain, Nparam) which stores the
+Monte Carlo Markov Chain (MCMC) where Nchain is the number of iterations of the
+MCMC and Nparam is the number of parameters, and a label of arrays, you could
+simply do
+```python
+from py_coda import mcmc
+mcmcobj = mcmc(labels, data, thin=1)
+mcmcobj.geweke()
+mcmcobj.get_stats()
+mcmcobj.plot_traces()
+mcmcobj.plot_autocorr()
+mcmcobj.heidelberger_welch()
+```
+
+Please file bug reports or issues if you find any.
