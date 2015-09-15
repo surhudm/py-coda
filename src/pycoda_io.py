@@ -24,23 +24,22 @@ class mcmc():
         self.coda = importr("coda")
 
         self.labels = labels
-        self.data = data
 
         self.nparam = len(self.labels)
-        data_columns = self.data[0].size
+        data_columns = data[0].size
 
         if data_columns < self.nparam:
             raise IOError("The number of columns in chainfile are less than equal to number of labels in indexfile")
 
         if data_columns > self.nparam:
-            self.data = self.data[:, :self.nparam-data_columns]
+            data = data[:, :self.nparam-data_columns]
 
-        self.data = np.transpose(self.data)
-        self.data = self.data[:, ::thin]
+        data = np.transpose(data)
+        data = data[:, ::thin]
 
-        self.chain_elements = self.data[0].size
+        self.chain_elements = data[0].size
 
-        self.codamcmc = self.coda.mcmc(robjects.r['matrix'](robjects.FloatVector(self.data.flatten()), nrow=self.chain_elements))
+        self.codamcmc = self.coda.mcmc(robjects.r['matrix'](robjects.FloatVector(data.flatten()), nrow=self.chain_elements))
 
     def plot_traces(self, n_at_time=5, backend="TkAgg", savefig=0):
 
@@ -48,12 +47,18 @@ class mcmc():
         matplotlib.use(backend)
         import pylab as pl
 
+        if not savefig:
+            pl.ion()
+
         sys.stdout.write("Computing traces...\n")
 
         fignumber = 0
         for i in range(self.nparam):
             ax = pl.subplot(n_at_time, 1, i%n_at_time+1)
-            ax.plot(range(self.chain_elements), self.data[i], color='grey')
+            array = np.array(self.codamcmc[i*self.chain_elements:(i+1)*self.chain_elements])
+            ax.plot(range(self.chain_elements),
+                    array,
+                    color='grey')
             ax.set_ylabel(r"%s"%self.labels[i])
 
             if i%n_at_time==n_at_time-1 or i==self.nparam-1:
@@ -64,10 +69,13 @@ class mcmc():
                     pl.savefig(savefig+"Trace_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    pl.show()
+                    raw_input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
+
+        if not savefig:
+            pl.ioff()
 
         return 0
 
@@ -85,7 +93,7 @@ class mcmc():
         list_to_print = ["Param", "0.025%", "16%", "50%", "84%", "97.5%"]
         fp.write('\t'.join([x for x in list_to_print])+"\n")
         for i in xrange(self.nparam):
-            array = self.data[i]
+            array = self.codamcmc[i*self.chain_elements:(i+1)*self.chain_elements]
             array = np.sort(array)
             list_to_print = [self.labels[i], "%.5e" % array[i025], "%.5e" %
                     array[i16], "%.5e" % array[i50], "%.5e" % array[i84], "%.5e" %
@@ -98,12 +106,15 @@ class mcmc():
         matplotlib.use(backend)
         import pylab as pl
 
+        if not savefig:
+            pl.ion()
+
         sys.stdout.write("Computing autocorrelations, please be patient...\n")
         fignumber = 0
         for i in xrange(self.nparam):
             ax = pl.subplot(n_at_time, 1, i%n_at_time+1)
 
-            array = self.data[i]
+            array = self.codamcmc[i*self.chain_elements:(i+1)*self.chain_elements]
             f = np.fft.fft(array-np.mean(array), n=2*self.chain_elements-1)
             acf = np.real(np.fft.ifft(f * np.conjugate(f)))
             acf = acf[:self.chain_elements]
@@ -118,10 +129,13 @@ class mcmc():
                     pl.savefig(savefig+"autocorr_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    pl.show()
+                    raw_input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
+
+        if not savefig:
+            pl.ioff()
 
         return 0
 
@@ -130,6 +144,9 @@ class mcmc():
         import matplotlib
         matplotlib.use(backend)
         import pylab as pl
+
+        if not savefig:
+            pl.ion()
 
         sys.stdout.write("Computing Geweke test, please be patient...\n")
 
@@ -153,10 +170,13 @@ class mcmc():
                     pl.savefig(savefig+"geweke_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    pl.show()
+                    raw_input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
+
+        if not savefig:
+            pl.ioff()
 
         return 0
 
@@ -174,7 +194,7 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
 
 if __name__ == "__main__":
     mcmcobj = read_pycoda("chainfile.trimmed.out", "chainnew.ind", thin=1)
-    # mcmcobj.get_stats()
-    # mcmcobj.plot_traces()
-    # mcmcobj.plot_autocorr()
     mcmcobj.geweke()
+    mcmcobj.get_stats()
+    mcmcobj.plot_traces()
+    mcmcobj.plot_autocorr()
