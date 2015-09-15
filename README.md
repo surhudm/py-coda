@@ -23,7 +23,7 @@ sudo apt-get install r-base r-base-dev python-rpy2
 
 ```bash
 R CMD INSTALL mypkg -l $HOME/Rpackages/
-cat R_LIBS_USER="$HOME/Rpackages" > ~/.Renviron
+echo R_LIBS_USER="$HOME/Rpackages" > ~/.Renviron
 ```
 
 3) Install py-coda
