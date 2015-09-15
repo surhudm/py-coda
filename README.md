@@ -22,8 +22,9 @@ sudo apt-get install r-base r-base-dev python-rpy2
 2) Install the coda package
 
 ```bash
-R CMD INSTALL mypkg -l $HOME/Rpackages/
+mkdir $HOME/Rpackages
 echo R_LIBS_USER="$HOME/Rpackages" > ~/.Renviron
+Rscript -e 'install.packages("coda", repos="http://cran.us.r-project.org")'
 ```
 
 3) Install py-coda
