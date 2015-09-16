@@ -1,15 +1,6 @@
 import numpy as np
 import sys as sys
 
-'''
-Things which coda plots:
-
-    Z scores of Geweke test
-    Autocorrelations
-    Cross-correlations
-
-'''
-
 class IOError(Exception):
     def __init__(self, value):
         self.value = value
@@ -18,7 +9,8 @@ class IOError(Exception):
 
 class mcmc():
     def __init__(self, labels, data, thin):
-        "Initializes mcmc object
+        '''
+        Initializes mcmc object
 
         :Parameters:
 
@@ -38,8 +30,8 @@ class mcmc():
         >>> from py_coda import mcmc
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> help(a)
+        '''
 
-        "
         from rpy2 import robjects
         from rpy2.robjects.packages import importr
         self.coda = importr("coda")
@@ -63,7 +55,8 @@ class mcmc():
         self.codamcmc = self.coda.mcmc(robjects.r['matrix'](robjects.FloatVector(data.flatten()), nrow=self.chain_elements))
 
     def plot_traces(self, n_at_time=5, backend="TkAgg", savefig=0):
-        "Generate trace plots
+        '''
+        Generate trace plots
 
         :Parameters:
 
@@ -86,7 +79,7 @@ class mcmc():
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> a.plot_traces(n_at_time=5, backend=\"TkAgg\", savefig=\"MCMC\")
 
-        "
+        '''
         import matplotlib
         matplotlib.use(backend)
         import pylab as pl
@@ -124,7 +117,8 @@ class mcmc():
         return 0
 
     def get_stats(self, fp=sys.stdout):
-        "Display statistics of the chain, such as the 2.5, 16, 50, 84 and 97.5
+        '''
+        Display statistics of the chain, such as the 2.5, 16, 50, 84 and 97.5
         percentiles
 
         :Parameters:
@@ -141,7 +135,7 @@ class mcmc():
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> a.get_stats()
 
-        "
+        '''
         sys.stdout.write("Computing stats...\n")
 
         i025 = int(0.025 * self.chain_elements)
@@ -162,7 +156,8 @@ class mcmc():
             fp.write('\t'.join([x for x in list_to_print])+"\n")
 
     def plot_autocorr(self, n_at_time=6, backend="TkAgg", savefig=0):
-        "Generate plots with autocorrelations
+        '''
+        Generate plots with autocorrelations
 
         :Parameters:
 
@@ -185,7 +180,7 @@ class mcmc():
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> a.plot_autocorr(n_at_time=5, backend=\"TkAgg\", savefig=\"MCMC\")
 
-        "
+        '''
 
         import matplotlib
         matplotlib.use(backend)
@@ -225,7 +220,8 @@ class mcmc():
         return 0
 
     def heidelberger_welch(self, pvalue=0.05, eps=0.1):
-        "Performs the Heidelberger Welch test for stationarity and half width.
+        '''
+        Performs the Heidelberger Welch test for stationarity and half width.
 
         :Parameters:
 
@@ -244,8 +240,8 @@ class mcmc():
         >>> from py_coda import mcmc
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> a.heidelberger_welch()
+        '''
 
-        "
         hw_output = self.coda.heidel_diag(self.codamcmc, eps=eps, pvalue=pvalue)
         sys.stdout.write("Computing Heidelberger Welch stationarity and the half width test, please be patient...\n")
 
@@ -253,7 +249,8 @@ class mcmc():
         return hw_output
 
     def geweke(self, nbins=20, n_at_time=6, backend="TkAgg", savefig=0):
-        "Plots the z-scores of the Geweke test
+        '''
+        Plots the z-scores of the Geweke test
 
         :Parameters:
 
@@ -278,8 +275,8 @@ class mcmc():
         >>> from py_coda import mcmc
         >>> a = mcmc(label_array, mcmc_array, 1)
         >>> a.geweke()
+        '''
 
-        "
         import matplotlib
         matplotlib.use(backend)
         import pylab as pl
@@ -321,7 +318,8 @@ class mcmc():
 
 
 def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
-    "Reads in flat text file MCMC output
+    '''
+    Reads in flat text file MCMC output
 
     :Parameters:
 
@@ -330,7 +328,7 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
     -   indexfile : Name of the file that contains latex labels for every
         parameter
     -   thin : Optional argument to specify the thinning interval (default=1)
-    -   **kwargs : Optional keyword arguments that can be passed to the
+    -   kwargs : Optional keyword arguments that can be passed to the
         numpy.loadtxt command for reading the chainfile (e.g., read only
         specific columns using usecols)
 
@@ -344,8 +342,8 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
     >>> a = read_pycoda(\"chainfile.out\", \"chainfile.labels\", thin=1,
     usecols=(0, 1, 2))
     >>> help(a)
+    '''
 
-    "
     labels = [line.rstrip("\n") for line in open(indexfile)]
 
     data = np.loadtxt(chainfile, **kwargs)
