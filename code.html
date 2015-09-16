@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code documentation &mdash; py_coda 0.99 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="py_coda 0.99 documentation" href="index.html"/>
+        <link rel="prev" title="Installation:" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> py_coda
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation:</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Code documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-py_coda">Class: py_coda</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">py_coda</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Code documentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/code.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="code-documentation">
+<h1>Code documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<p>All the examples assume that you have set the PYTHONPATH environment variable
+to the installation location of py_coda</p>
+<div class="section" id="module-py_coda">
+<span id="class-py-coda"></span><h2>Class: py_coda<a class="headerlink" href="#module-py_coda" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="py_coda.read_pycoda">
+<code class="descclassname">py_coda.</code><code class="descname">read_pycoda</code><span class="sig-paren">(</span><em>chainfile</em>, <em>indexfile</em>, <em>thin=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#read_pycoda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.read_pycoda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in flat text file MCMC output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>chainfile : Name of the chainfile to be read. Should contain the
+parameters of the model at every step on every line.</li>
+<li>indexfile : Name of the file that contains latex labels for every
+parameter</li>
+<li>thin : Optional argument to specify the thinning interval (default=1)</li>
+<li>kwargs : Optional keyword arguments that can be passed to the
+numpy.loadtxt command for reading the chainfile (e.g., read only
+specific columns using usecols)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>An py_coda mcmc object</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">read_pycoda</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">read_pycoda</span><span class="p">(</span><span class="s">&quot;chainfile.out&quot;</span><span class="p">,</span> <span class="s">&quot;chainfile.labels&quot;</span><span class="p">,</span> <span class="n">thin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="go">usecols=(0, 1, 2))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="py_coda.mcmc">
+<em class="property">class </em><code class="descclassname">py_coda.</code><code class="descname">mcmc</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>thin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="py_coda.mcmc.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>thin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes mcmc object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>labels : An array of strings containing the latex labels for the
+parameters</li>
+<li>data : An array containing the output of the Monte Carlo Markov
+chain. The array should have shape (Niterations, Nparam)</li>
+<li>thin : Specify the thinning parameter, this will use only one
+sample every thin iterations.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>MCMC object</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="py_coda.mcmc.get_stats">
+<code class="descname">get_stats</code><span class="sig-paren">(</span><em>fp=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.get_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.get_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display statistics of the chain, such as the 2.5, 16, 50, 84 and 97.5
+percentiles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>fp : Optional python file object, default is sys.stdout</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>0</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="py_coda.mcmc.geweke">
+<code class="descname">geweke</code><span class="sig-paren">(</span><em>nbins=20</em>, <em>n_at_time=6</em>, <em>backend='TkAgg'</em>, <em>savefig=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.geweke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.geweke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the z-scores of the Geweke test</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>nbins : Optional argument which sets the number of different
+starting points in the chain to use to perform the Geweke test
+(default=20)</li>
+<li>n_at_time : Optional argument to specify the number of parameters to
+be plotted on one page, the subplots are arranged in n_at_time rows,
+with default value equal to 5</li>
+<li>backend : Optional argument to specify the matplotlib backend to be
+used. By default uses the TkAgg backend.</li>
+<li>savefig : Optional string argument which is appended to the figure
+names, if non-empty, the plots are not displayed. By default figures
+are not saved, but just displayed.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Generates plots with Geweke z-scores</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">geweke</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="py_coda.mcmc.heidelberger_welch">
+<code class="descname">heidelberger_welch</code><span class="sig-paren">(</span><em>pvalue=0.05</em>, <em>eps=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.heidelberger_welch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.heidelberger_welch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the Heidelberger Welch test for stationarity and half width.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>pvalue : Optional pvalue to be used to decide the success or failure
+of the stationarity test (default=0.05)</li>
+<li>eps : Optional argument which sets a tolerance level to decide the
+success of the halfwidth test (default=0.1)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Prints diagnostic text output, can optionally return the
+quantitative results of the test in an array as well</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">heidelberger_welch</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="py_coda.mcmc.plot_autocorr">
+<code class="descname">plot_autocorr</code><span class="sig-paren">(</span><em>n_at_time=6</em>, <em>backend='TkAgg'</em>, <em>savefig=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.plot_autocorr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.plot_autocorr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate plots with autocorrelations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>n_at_time : Optional argument to specify the number of parameters to
+be plotted on one page, the subplots are arranged in n_at_time rows,
+with default value equal to 5</li>
+<li>backend : Optional argument to specify the matplotlib backend to be
+used. By default uses the TkAgg backend.</li>
+<li>savefig : Optional string argument which is appended to the figure
+names, if non-empty, the plots are not displayed. By default figures
+are not saved, but just displayed.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>0</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">plot_autocorr</span><span class="p">(</span><span class="n">n_at_time</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s">&quot;TkAgg&quot;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="s">&quot;MCMC&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="py_coda.mcmc.plot_traces">
+<code class="descname">plot_traces</code><span class="sig-paren">(</span><em>n_at_time=5</em>, <em>backend='TkAgg'</em>, <em>savefig=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_coda.html#mcmc.plot_traces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_coda.mcmc.plot_traces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate trace plots</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>n_at_time : Optional argument to specify the number of parameters to
+be plotted on one page, the subplots are arranged in n_at_time rows,
+with default value equal to 5</li>
+<li>backend : Optional argument to specify the matplotlib backend to be
+used. By default uses the TkAgg backend.</li>
+<li>savefig : Optional string argument which is appended to the figure
+names, if non-empty, the plots are not displayed. By default figures
+are not saved, but just displayed.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>0</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">py_coda</span> <span class="kn">import</span> <span class="n">mcmc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">mcmc</span><span class="p">(</span><span class="n">label_array</span><span class="p">,</span> <span class="n">mcmc_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">plot_traces</span><span class="p">(</span><span class="n">n_at_time</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s">&quot;TkAgg&quot;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="s">&quot;MCMC&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation:" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Surhud More.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.99',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
