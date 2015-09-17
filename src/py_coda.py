@@ -81,7 +81,7 @@ class mcmc():
 
         '''
         import matplotlib
-        matplotlib.use(backend)
+        # matplotlib.use(backend)
         import pylab as pl
 
         if not savefig:
@@ -183,7 +183,7 @@ class mcmc():
         '''
 
         import matplotlib
-        matplotlib.use(backend)
+        # matplotlib.use(backend)
         import pylab as pl
 
         if not savefig:
@@ -278,7 +278,7 @@ class mcmc():
         '''
 
         import matplotlib
-        matplotlib.use(backend)
+        # matplotlib.use(backend)
         import pylab as pl
 
         if not savefig:
