@@ -220,7 +220,7 @@ class mcmc():
 
         return 0
 
-    def heidelberger_welch(self, pvalue=0.05, eps=0.1):
+    def heidelberger_welch(self, pvalue=0.05, eps=0.1, fp=sys.stdout):
         '''
         Performs the Heidelberger Welch test for stationarity and half width.
 
@@ -245,11 +245,12 @@ class mcmc():
 
         hw_output = self.coda.heidel_diag(self.codamcmc, eps=eps, pvalue=pvalue)
         sys.stdout.write("Computing Heidelberger Welch stationarity and the half width test, please be patient...\n")
+        df = pandas.DataFrame(np.array(hw_output), columns=hw_output.colnames, index=self.labels)
+        df.to_csv(fp, sep=" ", na_rep="NaN", index_label="Variable")
 
-        print (hw_output)
-        return hw_output
+        return df
 
-    def geweke(self, nbins=20, n_at_time=6, backend="TkAgg", savefig=0):
+    def geweke(self, nbins=20, n_at_time=6, backend="TkAgg", savefig=0, fp=sys.stdout):
         '''
         Plots the z-scores of the Geweke test
 
@@ -266,6 +267,7 @@ class mcmc():
         -   savefig : Optional string argument which is appended to the figure
             names, if non-empty, the plots are not displayed. By default figures
             are not saved, but just displayed.
+        -   fp: Optional file handle, else print to stdout
 
         :Returns:
 
@@ -296,7 +298,8 @@ class mcmc():
         fignumber = 0
         for i in range(self.nparam):
             ax = pl.subplot(n_at_time, 1, i%n_at_time+1)
-            ax.scatter(bins, geweke_output[:, i], color='grey', label=r"%s" % self.labels[i])
+            ax.fill_between(bins, -1.96, 1.96, color="grey", alpha=0.3)
+            ax.scatter(bins, geweke_output[:, i], color='k', label=r"%s" % self.labels[i])
             ax.set_ylabel(r"Z-score")
             ax.legend()
 
@@ -314,6 +317,9 @@ class mcmc():
 
         if not savefig:
             pl.ioff()
+
+        df = pandas.DataFrame(geweke_output.T, columns=bins.astype(int), index=self.labels)
+        df.to_csv(fp, sep=" ", na_rep="NaN", index_label="Variable")
 
         return 0
 
@@ -347,7 +353,7 @@ def read_pycoda(chainfile, indexfile, thin=1, weight_col=None, **kwargs):
     '''
 
     labels = [line.rstrip("\n") for line in open(indexfile)]
-    print (labels)
+    #print (labels)
 
     #data = np.loadtxt(chainfile, **kwargs)
     df = pandas.read_csv(chainfile, header=None, names=labels, **kwargs)
@@ -357,8 +363,6 @@ def read_pycoda(chainfile, indexfile, thin=1, weight_col=None, **kwargs):
         df.reset_index(drop=True, inplace=True)
         df.drop(weight_col, inplace=True, axis=1)
         labels.remove(weight_col)
-        print(df)
-        print(labels)
 
     data = df.values
 
