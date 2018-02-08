@@ -1,5 +1,6 @@
 import numpy as np
 import sys as sys
+import pandas
 
 class IOError(Exception):
     def __init__(self, value):
@@ -100,13 +101,13 @@ class mcmc():
 
             if i%n_at_time==n_at_time-1 or i==self.nparam-1:
                 ax.set_xlabel("Iteration number")
-                print "Iteration number : ", i
+                print("Iteration number : ", i)
 
                 if savefig:
                     pl.savefig(savefig+"Trace_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    raw_input("press any key to continue")
+                    input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
@@ -147,7 +148,7 @@ class mcmc():
         # Let us compute the mean and percentiles
         list_to_print = ["Param", "0.025%", "16%", "50%", "84%", "97.5%"]
         fp.write('\t'.join([x for x in list_to_print])+"\n")
-        for i in xrange(self.nparam):
+        for i in range(self.nparam):
             array = self.codamcmc[i*self.chain_elements:(i+1)*self.chain_elements]
             array = np.sort(array)
             list_to_print = [self.labels[i], "%.5e" % array[i025], "%.5e" %
@@ -191,7 +192,7 @@ class mcmc():
 
         sys.stdout.write("Computing autocorrelations, please be patient...\n")
         fignumber = 0
-        for i in xrange(self.nparam):
+        for i in range(self.nparam):
             ax = pl.subplot(n_at_time, 1, i%n_at_time+1)
 
             array = self.codamcmc[i*self.chain_elements:(i+1)*self.chain_elements]
@@ -209,7 +210,7 @@ class mcmc():
                     pl.savefig(savefig+"autocorr_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    raw_input("press any key to continue")
+                    input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
@@ -245,7 +246,7 @@ class mcmc():
         hw_output = self.coda.heidel_diag(self.codamcmc, eps=eps, pvalue=pvalue)
         sys.stdout.write("Computing Heidelberger Welch stationarity and the half width test, please be patient...\n")
 
-        print hw_output
+        print (hw_output)
         return hw_output
 
     def geweke(self, nbins=20, n_at_time=6, backend="TkAgg", savefig=0):
@@ -288,12 +289,12 @@ class mcmc():
 
         bins = np.linspace(1., self.chain_elements/2-1, nbins)
         geweke_output = np.zeros(nbins*self.nparam).reshape(nbins, self.nparam)
-        for i in xrange(nbins):
+        for i in range(nbins):
             tmp_geweke = self.coda.geweke_diag(self.coda.window_mcmc(self.codamcmc, start=bins[i]))
             geweke_output[i, :] = tmp_geweke[0]
 
         fignumber = 0
-        for i in xrange(self.nparam):
+        for i in range(self.nparam):
             ax = pl.subplot(n_at_time, 1, i%n_at_time+1)
             ax.scatter(bins, geweke_output[:, i], color='grey', label=r"%s" % self.labels[i])
             ax.set_ylabel(r"Z-score")
@@ -306,7 +307,7 @@ class mcmc():
                     pl.savefig(savefig+"geweke_%d.png" % fignumber)
                     fignumber += 1
                 else:
-                    raw_input("press any key to continue")
+                    input("press any key to continue")
                 pl.clf()
             else:
                 ax.set_xticklabels([])
@@ -317,7 +318,7 @@ class mcmc():
         return 0
 
 
-def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
+def read_pycoda(chainfile, indexfile, thin=1, weight_col=None, **kwargs):
     '''
     Reads in flat text file MCMC output
 
@@ -328,8 +329,9 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
     -   indexfile : Name of the file that contains latex labels for every
         parameter
     -   thin : Optional argument to specify the thinning interval (default=1)
+    -   weight_col : Optional argument to specify the thinning interval (default=1)
     -   kwargs : Optional keyword arguments that can be passed to the
-        numpy.loadtxt command for reading the chainfile (e.g., read only
+        pandas.read_csv command for reading the chainfile (e.g., read only
         specific columns using usecols)
 
     :Returns:
@@ -345,8 +347,20 @@ def read_pycoda(chainfile, indexfile, thin=1, **kwargs):
     '''
 
     labels = [line.rstrip("\n") for line in open(indexfile)]
+    print (labels)
 
-    data = np.loadtxt(chainfile, **kwargs)
+    #data = np.loadtxt(chainfile, **kwargs)
+    df = pandas.read_csv(chainfile, header=None, names=labels, **kwargs)
+
+    if weight_col is not None:
+        df = df.iloc[np.repeat(np.arange(len(df)), df[weight_col].values.astype(int))]
+        df.reset_index(drop=True, inplace=True)
+        df.drop(weight_col, inplace=True, axis=1)
+        labels.remove(weight_col)
+        print(df)
+        print(labels)
+
+    data = df.values
 
     return mcmc(labels, data, thin)
 
