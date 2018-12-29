@@ -40,7 +40,9 @@ Run MCMC diagnostics:
 Prepare MCMC file say chainfile.out where every line is the parameter set at
 every step of the chain. Prepare another file where each line lists the
 parameter name, write this parameter name in latex form, as it will get set as a
-label on the plots. Then you could run the diagnostics as follows:
+label on the plots. For examples, see the files `chainfile.ind` and
+`chainfile.out` (the latter file only contains 100 lines to prevent the
+repository from being bulky). Then you could run the diagnostics as follows:
 
 ```python
 from py_coda import read_pycoda
